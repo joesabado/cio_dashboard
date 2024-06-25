@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIO Dashboard - Strategic Alignment and Value Delivery</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8">CIO Dashboard</h1>
+        
+        <div class="mb-8">
+            <div class="flex space-x-4">
+                <a href="financial.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Financial Management</a>
+                <a href="service-portfolio.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Service Portfolio</a>
+                <a href="performance-metrics.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Performance Metrics</a>
+                <a href="strategic-alignment.html" class="px-4 py-2 bg-blue-500 text-white rounded">Strategic Alignment</a>
+                <a href="risk-compliance.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Risk & Compliance</a>
+            </div>
+        </div>
+
+        <div id="strategic">
+            <h2 class="text-2xl font-bold mb-4">Strategic Alignment and Value Delivery</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Project Timeline</h3>
+                    <canvas id="projectTimelineChart"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Project Status Overview</h3>
+                    <canvas id="projectStatusChart"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md col-span-2">
+                    <h3 class="text-xl font-semibold mb-4">Innovation and Continuous Improvement Initiatives</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full table-auto">
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th class="px-4 py-2">Initiative</th>
+                                    <th class="px-4 py-2">Description</th>
+                                    <th class="px-4 py-2">Impact Score</th>
+                                    <th class="px-4 py-2">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border px-4 py-2">AI Chatbot Integration</td>
+                                    <td class="border px-4 py-2">Implementing AI for support</td>
+                                    <td class="border px-4 py-2">8.5/10</td>
+                                    <td class="border px-4 py-2">In Progress</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-4 py-2">Automated Backups</td>
+                                    <td class="border px-4 py-2">Automating data backup process</td>
+                                    <td class="border px-4 py-2">7/10</td>
+                                    <td class="border px-4 py-2">Completed</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-4 py-2">Mobile App Development</td>
+                                    <td class="border px-4 py-2">Developing mobile app for services</td>
+                                    <td class="border px-4 py-2">9/10</td>
+                                    <td class="border px-4 py-2">Planning</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-4 py-2">Cybersecurity Training</td>
+                                    <td class="border px-4 py-2">Comprehensive training program</td>
+                                    <td class="border px-4 py-2">8/10</td>
+                                    <td class="border px-4 py-2">Ongoing</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Project Timeline Chart
+        const projectTimelineCtx = document.getElementById('projectTimelineChart').getContext('2d');
+        new Chart(projectTimelineCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Cloud Migration', 'Security Enhancement', 'ERP System Upgrade', 'Data Analytics Platform'],
+                datasets: [{
+                    label: 'Project Duration (months)',
+                    data: [12, 6, 18, 9],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(255, 206, 86, 0.5)',
+                        'rgba(75, 192, 192, 0.5)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 206, 86)',
+                        'rgb(75, 192, 192)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Duration (months)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Project Status Chart
+        const projectStatusCtx = document.getElementById('projectStatusChart').getContext('2d');
+        new Chart(projectStatusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['On Track', 'At Risk', 'Delayed', 'Completed'],
+                datasets: [{
+                    data: [3, 1, 1, 2],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

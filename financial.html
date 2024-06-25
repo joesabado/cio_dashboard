@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIO Dashboard - Financial Management</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8">CIO Dashboard</h1>
+        
+        <div class="mb-8">
+            <div class="flex space-x-4">
+                <a href="financial.html" class="px-4 py-2 bg-blue-500 text-white rounded">Financial Management</a>
+                <a href="service-portfolio.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Service Portfolio</a>
+                <a href="performance-metrics.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Performance Metrics</a>
+                <a href="strategic-alignment.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Strategic Alignment</a>
+                <a href="risk-compliance.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Risk & Compliance</a>
+            </div>
+        </div>
+
+        <div id="financial">
+            <h2 class="text-2xl font-bold mb-4">Financial Management</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">IT Spending Overview</h3>
+                    <canvas id="spendingOverviewChart"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">IT Spending by Category (2023)</h3>
+                    <canvas id="spendingCategoryChart"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Year-over-Year Comparison</h3>
+                    <canvas id="yearOverYearChart"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Key Financial Metrics</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center">
+                            <p class="text-gray-600">Total IT Budget</p>
+                            <p class="text-2xl font-bold text-blue-600">$5.2M</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-gray-600">YoY Change</p>
+                            <p class="text-2xl font-bold text-green-600">+5.8%</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-gray-600">IT Spend as % of Revenue</p>
+                            <p class="text-2xl font-bold text-purple-600">3.2%</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-gray-600">Cost Savings</p>
+                            <p class="text-2xl font-bold text-green-600">$320K</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Financial Management Charts
+        const spendingOverviewCtx = document.getElementById('spendingOverviewChart').getContext('2d');
+        new Chart(spendingOverviewCtx, {
+            type: 'bar',
+            data: {
+                labels: ['2021', '2022', '2023'],
+                datasets: [{
+                    label: 'IT Spending (in millions)',
+                    data: [4.8, 4.9, 5.2],
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Millions ($)'
+                        }
+                    }
+                }
+            }
+        });
+
+        const spendingCategoryCtx = document.getElementById('spendingCategoryChart').getContext('2d');
+        new Chart(spendingCategoryCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Infrastructure', 'Software', 'Personnel', 'Services', 'Other'],
+                datasets: [{
+                    data: [1.5, 1.2, 1.8, 0.5, 0.2],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(255, 206, 86, 0.5)',
+                        'rgba(75, 192, 192, 0.5)',
+                        'rgba(153, 102, 255, 0.5)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += `$${context.raw}M`;
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const yearOverYearCtx = document.getElementById('yearOverYearChart').getContext('2d');
+        new Chart(yearOverYearCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Infrastructure', 'Software', 'Personnel', 'Services', 'Other'],
+                datasets: [{
+                    label: '2022',
+                    data: [1.4, 1.1, 1.7, 0.5, 0.2],
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: '2023',
+                    data: [1.5, 1.2, 1.8, 0.5, 0.2],
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: false,
+                    },
+                    y: {
+                        stacked: false,
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Millions ($)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

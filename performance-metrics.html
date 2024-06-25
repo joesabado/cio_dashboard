@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIO Dashboard - Performance Metrics</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8">CIO Dashboard</h1>
+        
+        <div class="mb-8">
+            <div class="flex space-x-4">
+                <a href="financial.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Financial Management</a>
+                <a href="service-portfolio.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Service Portfolio</a>
+                <a href="performance-metrics.html" class="px-4 py-2 bg-blue-500 text-white rounded">Performance Metrics</a>
+                <a href="strategic-alignment.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Strategic Alignment</a>
+                <a href="risk-compliance.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Risk & Compliance</a>
+            </div>
+        </div>
+
+        <div id="performance">
+            <h2 class="text-2xl font-bold mb-4">Performance and Quality Metrics</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">System Uptime</h3>
+                    <canvas id="uptimeChart"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Key Performance Indicators</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center">
+                            <p class="text-gray-600">MTTR</p>
+                            <p class="text-2xl font-bold text-blue-600">3 hours</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-gray-600">MTBF</p>
+                            <p class="text-2xl font-bold text-green-600">45 days</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-gray-600">Downtime Incidents</p>
+                            <p class="text-2xl font-bold text-red-600">3</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-gray-600">Avg. Incident Duration</p>
+                            <p class="text-2xl font-bold text-yellow-600">1.2 hours</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">SLA Compliance</h3>
+                    <canvas id="slaComplianceChart"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Incident Resolution Time Trend</h3>
+                    <canvas id="incidentResolutionChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // System Uptime Chart
+        const uptimeCtx = document.getElementById('uptimeChart').getContext('2d');
+        new Chart(uptimeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Uptime', 'Downtime'],
+                datasets: [{
+                    data: [99.8, 0.2],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(255, 99, 132, 0.7)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'System Uptime: 99.8%'
+                    }
+                }
+            }
+        });
+
+        // SLA Compliance Chart
+        const slaComplianceCtx = document.getElementById('slaComplianceChart').getContext('2d');
+        new Chart(slaComplianceCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Incident Response Time', 'Incident Resolution Time'],
+                datasets: [
+                    {
+                        label: 'Target',
+                        data: [1, 4],
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    },
+                    {
+                        label: 'Actual',
+                        data: [0.8, 3.5],
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Hours'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Incident Resolution Time Trend
+        const incidentResolutionCtx = document.getElementById('incidentResolutionChart').getContext('2d');
+        new Chart(incidentResolutionCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Average Resolution Time',
+                    data: [4.2, 3.8, 3.5, 3.2, 3.0, 2.8],
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Hours'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

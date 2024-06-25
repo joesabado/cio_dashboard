@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIO Dashboard - Service Portfolio Management</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8">CIO Dashboard</h1>
+        
+        <div class="mb-8">
+            <div class="flex space-x-4">
+                <a href="financial.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Financial Management</a>
+                <a href="service-portfolio.html" class="px-4 py-2 bg-blue-500 text-white rounded">Service Portfolio</a>
+                <a href="performance-metrics.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Performance Metrics</a>
+                <a href="strategic-alignment.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Strategic Alignment</a>
+                <a href="risk-compliance.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Risk & Compliance</a>
+            </div>
+        </div>
+
+        <div id="service">
+            <h2 class="text-2xl font-bold mb-4">Service Portfolio Management</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Service Catalog (EDUCAUSE Categories)</h3>
+                    <div id="serviceTreemap" style="height: 400px;"></div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Service Utilization</h3>
+                    <canvas id="serviceUtilizationChart"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Customer Satisfaction Ratings</h3>
+                    <canvas id="satisfactionRatingsChart"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Service Performance Metrics</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center">
+                            <p class="text-gray-600">Active Users</p>
+                            <p class="text-2xl font-bold text-blue-600">15,000</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-gray-600">Request Volumes</p>
+                            <p class="text-2xl font-bold text-green-600">2,500/month</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-gray-600">Avg. Satisfaction Score</p>
+                            <p class="text-2xl font-bold text-purple-600">4.3/5</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-gray-600">Service Availability</p>
+                            <p class="text-2xl font-bold text-yellow-600">99.9%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Service Catalog Treemap
+        const serviceData = {
+            name: "Services",
+            children: [
+                {
+                    name: "Administrative and Business",
+                    children: [
+                        {name: "Alumni and Advancement", value: 300},
+                        {name: "Finance", value: 250},
+                        {name: "Human Resources", value: 200}
+                    ]
+                },
+                {
+                    name: "Communication and Collaboration",
+                    children: [
+                        {name: "Email Services", value: 3000},
+                        {name: "Video Conferencing", value: 1500},
+                        {name: "Collaboration Tools", value: 1000}
+                    ]
+                },
+                {
+                    name: "IT Management and Security",
+                    children: [
+                        {name: "Identity Management", value: 800},
+                        {name: "Cybersecurity", value: 1200},
+                        {name: "IT Service Management", value: 600}
+                    ]
+                }
+            ]
+        };
+
+        const width = 600;
+        const height = 400;
+
+        const treemap = d3.treemap()
+            .size([width, height])
+            .padding(1)
+            .round(true);
+
+        const root = d3.hierarchy(serviceData)
+            .sum(d => d.value)
+            .sort((a, b) => b.value - a.value);
+
+        treemap(root);
+
+        const svg = d3.select("#serviceTreemap")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        const leaf = svg.selectAll("g")
+            .data(root.leaves())
+            .join("g")
+            .attr("transform", d => `translate(${d.x0},${d.y0})`);
+
+        leaf.append("rect")
+            .attr("width", d => d.x1 - d.x0)
+            .attr("height", d => d.y1 - d.y0)
+            .attr("fill", (d, i) => d3.schemeCategory10[i % 10]);
+
+        leaf.append("text")
+            .selectAll("tspan")
+            .data(d => d.data.name.split(/(?=[A-Z][^A-Z])/g))
+            .join("tspan")
+            .attr("x", 3)
+            .attr("y", (d, i, nodes) => `${(i === nodes.length - 1) * 0.3 + 1.1 + i * 0.9}em`)
+            .attr("fill-opacity", 0.7)
+            .text(d => d);
+
+        // Service Utilization
+        const serviceUtilizationCtx = document.getElementById('serviceUtilizationChart').getContext('2d');
+        new Chart(serviceUtilizationCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Email', 'Video Conferencing', 'Identity Management', 'Cybersecurity', 'Alumni Services'],
+                datasets: [{
+                    label: 'Active Users',
+                    data: [3000, 1500, 800, 1200, 300],
+                    backgroundColor: 'rgba(75, 192, 192, 0.7)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Active Users'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Customer Satisfaction Ratings
+        const satisfactionRatingsCtx = document.getElementById('satisfactionRatingsChart').getContext('2d');
+        new Chart(satisfactionRatingsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Email', 'Video Conferencing', 'Identity Management', 'Cybersecurity', 'Alumni Services'],
+                datasets: [{
+                    label: 'Satisfaction Score',
+                    data: [4.5, 4.2, 4.0, 4.3, 4.4],
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 5,
+                        title: {
+                            display: true,
+                            text: 'Satisfaction Score (out of 5)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
