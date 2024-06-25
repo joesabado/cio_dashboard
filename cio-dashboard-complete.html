@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIO Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8">CIO Dashboard</h1>
+        
+        <div class="mb-8">
+            <div class="flex space-x-4">
+                <button class="tab-button px-4 py-2 bg-blue-500 text-white rounded" data-tab="financial">Financial Management</button>
+                <button class="tab-button px-4 py-2 bg-blue-500 text-white rounded" data-tab="service">Service Portfolio</button>
+                <button class="tab-button px-4 py-2 bg-blue-500 text-white rounded" data-tab="performance">Performance Metrics</button>
+                <button class="tab-button px-4 py-2 bg-blue-500 text-white rounded" data-tab="strategic">Strategic Alignment</button>
+                <button class="tab-button px-4 py-2 bg-blue-500 text-white rounded" data-tab="risk">Risk and Compliance</button>
+            </div>
+        </div>
+
+        <div id="financial" class="tab-content active">
+            <h2 class="text-2xl font-bold mb-4">Financial Management</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white p-4 rounded shadow">
+                    <h3 class="text-xl font-bold mb-2">IT Spending</h3>
+                    <canvas id="spendingChart"></canvas>
+                </div>
+                <div class="bg-white p-4 rounded shadow">
+                    <h3 class="text-xl font-bold mb-2">Cost Allocation</h3>
+                    <canvas id="allocationChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div id="service" class="tab-content">
+            <h2 class="text-2xl font-bold mb-4">Service Portfolio Management</h2>
+            <div class="bg-white p-4 rounded shadow">
+                <h3 class="text-xl font-bold mb-2">Service Utilization</h3>
+                <canvas id="serviceUtilizationChart"></canvas>
+            </div>
+        </div>
+
+        <div id="performance" class="tab-content">
+            <h2 class="text-2xl font-bold mb-4">Performance and Quality Metrics</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white p-4 rounded shadow">
+                    <h3 class="text-xl font-bold mb-2">Uptime</h3>
+                    <canvas id="uptimeChart"></canvas>
+                </div>
+                <div class="bg-white p-4 rounded shadow">
+                    <h3 class="text-xl font-bold mb-2">SLA Compliance</h3>
+                    <canvas id="slaComplianceChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div id="strategic" class="tab-content">
+            <h2 class="text-2xl font-bold mb-4">Strategic Alignment and Value Delivery</h2>
+            <div class="bg-white p-4 rounded shadow">
+                <h3 class="text-xl font-bold mb-2">Project Timeline</h3>
+                <canvas id="projectTimelineChart"></canvas>
+            </div>
+        </div>
+
+        <div id="risk" class="tab-content">
+            <h2 class="text-2xl font-bold mb-4">Risk and Compliance</h2>
+            <div class="bg-white p-4 rounded shadow">
+                <h3 class="text-xl font-bold mb-2">Risk Heatmap</h3>
+                <canvas id="riskHeatmapChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching logic
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(button.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Financial Management Charts
+        const spendingCtx = document.getElementById('spendingChart').getContext('2d');
+        new Chart(spendingCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Administrative and Business', 'Communication and Collaboration', 'Desktop and Mobile Computing'],
+                datasets: [
+                    {
+                        label: '2023 Spend',
+                        data: [1200000, 800000, 600000],
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    },
+                    {
+                        label: '2022 Spend',
+                        data: [1150000, 750000, 650000],
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        const allocationCtx = document.getElementById('allocationChart').getContext('2d');
+        new Chart(allocationCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Administrative and Business', 'Communication and Collaboration', 'Desktop and Mobile Computing'],
+                datasets: [{
+                    data: [1200000, 800000, 600000],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(255, 206, 86, 0.5)'
+                    ],
+                }]
+            },
+            options: { responsive: true }
+        });
+
+        // Service Portfolio Management - Horizontal Bar Chart
+        const serviceUtilizationCtx = document.getElementById('serviceUtilizationChart').getContext('2d');
+        new Chart(serviceUtilizationCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Alumni and Advancement', 'Email Services'],
+                datasets: [{
+                    label: 'Service Utilization',
+                    data: [300, 3000],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(255, 159, 64, 0.5)'
+                    ],
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Performance and Quality Metrics
+        const uptimeCtx = document.getElementById('uptimeChart').getContext('2d');
+        new Chart(uptimeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Uptime', 'Downtime'],
+                datasets: [{
+                    data: [99.8, 0.2],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.5)',
+                        'rgba(255, 99, 132, 0.5)'
+                    ],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'System Uptime: 99.8%'
+                    }
+                }
+            }
+        });
+
+        const slaComplianceCtx = document.getElementById('slaComplianceChart').getContext('2d');
+        new Chart(slaComplianceCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Incident Response Time', 'Incident Resolution Time'],
+                datasets: [
+                    {
+                        label: 'Target',
+                        data: [1, 4],
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    },
+                    {
+                        label: 'Actual',
+                        data: [0.8, 3.5],
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Hours' } } }
+            }
+        });
+
+        // Strategic Alignment - Project Timeline
+        const projectTimelineCtx = document.getElementById('projectTimelineChart').getContext('2d');
+        new Chart(projectTimelineCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Cloud Migration', 'Security Enhancement', 'ERP System Upgrade'],
+                datasets: [{
+                    label: 'Project Duration (months)',
+                    data: [12, 5, 16],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(255, 206, 86, 0.5)'
+                    ],
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Duration (months)' }
+                    }
+                }
+            }
+        });
+
+        // Risk Heatmap
+        const riskHeatmapCtx = document.getElementById('riskHeatmapChart').getContext('2d');
+        new Chart(riskHeatmapCtx, {
+            type: 'bubble',
+            data: {
+                datasets: [{
+                    label: 'Risks',
+                    data: [
+                        { x: 2, y: 2, r: 10, label: 'Data Breach' },
+                        { x: 3, y: 3, r: 15, label: 'Service Downtime' },
+                        { x: 4, y: 2, r: 8, label: 'Insider Threats' },
+                        { x: 2, y: 4, r: 12, label: 'Phishing Attacks' }
+                    ],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(255, 206, 86, 0.5)',
+                        'rgba(75, 192, 192, 0.5)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Impact' },
+                        min: 0,
+                        max: 5
+                    },
+                    y: {
+                        title: { display: true, text: 'Likelihood' },
+                        min: 0,
+                        max: 5
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.raw.label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

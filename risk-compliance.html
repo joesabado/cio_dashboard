@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIO Dashboard - Risk and Compliance</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8">CIO Dashboard</h1>
+        
+        <div class="mb-8">
+            <div class="flex space-x-4">
+                <a href="financial.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Financial Management</a>
+                <a href="service-portfolio.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Service Portfolio</a>
+                <a href="performance-metrics.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Performance Metrics</a>
+                <a href="strategic-alignment.html" class="px-4 py-2 bg-gray-300 text-gray-700 rounded">Strategic Alignment</a>
+                <a href="risk-compliance.html" class="px-4 py-2 bg-blue-500 text-white rounded">Risk & Compliance</a>
+            </div>
+        </div>
+
+        <div id="risk-compliance">
+            <h2 class="text-2xl font-bold mb-4">Risk and Compliance</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Security Metrics</h3>
+                    <canvas id="securityMetricsChart"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Risk Heatmap</h3>
+                    <canvas id="riskHeatmapChart"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Compliance Status</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full table-auto">
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th class="px-4 py-2">Regulation</th>
+                                    <th class="px-4 py-2">Status</th>
+                                    <th class="px-4 py-2">Last Audit</th>
+                                    <th class="px-4 py-2">Next Audit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border px-4 py-2">GDPR</td>
+                                    <td class="border px-4 py-2">Compliant</td>
+                                    <td class="border px-4 py-2">Jan 2023</td>
+                                    <td class="border px-4 py-2">Jan 2024</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-4 py-2">HIPAA</td>
+                                    <td class="border px-4 py-2">Compliant</td>
+                                    <td class="border px-4 py-2">Mar 2023</td>
+                                    <td class="border px-4 py-2">Mar 2024</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-4 py-2">PCI-DSS</td>
+                                    <td class="border px-4 py-2">Compliant</td>
+                                    <td class="border px-4 py-2">May 2023</td>
+                                    <td class="border px-4 py-2">May 2024</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Risk Mitigation Strategies</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full table-auto">
+                            <thead class="bg-gray-200">
+                                <tr>
+                                    <th class="px-4 py-2">Risk</th>
+                                    <th class="px-4 py-2">Mitigation Strategy</th>
+                                    <th class="px-4 py-2">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border px-4 py-2">Data Breach</td>
+                                    <td class="border px-4 py-2">Enhanced encryption</td>
+                                    <td class="border px-4 py-2">Implemented</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-4 py-2">Service Downtime</td>
+                                    <td class="border px-4 py-2">Redundant systems</td>
+                                    <td class="border px-4 py-2">In Progress</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-4 py-2">Insider Threats</td>
+                                    <td class="border px-4 py-2">Increased monitoring</td>
+                                    <td class="border px-4 py-2">Ongoing</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Security Metrics Chart
+        const securityMetricsCtx = document.getElementById('securityMetricsChart').getContext('2d');
+        new Chart(securityMetricsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Vulnerabilities Patched', 'Security Incidents', 'Phishing Attempts Blocked', 'Data Breaches'],
+                datasets: [{
+                    label: 'Count',
+                    data: [95, 3, 1000, 0],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgb(75, 192, 192)',
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 206, 86)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Risk Heatmap Chart
+        const riskHeatmapCtx = document.getElementById('riskHeatmapChart').getContext('2d');
+        new Chart(riskHeatmapCtx, {
+            type: 'bubble',
+            data: {
+                datasets: [{
+                    label: 'Risks',
+                    data: [
+                        {x: 2, y: 2, r: 10, risk: 'Data Breach'},
+                        {x: 3, y: 3, r: 15, risk: 'Service Downtime'},
+                        {x: 4, y: 2, r: 8, risk: 'Insider Threats'},
+                        {x: 2, y: 4, r: 12, risk: 'Phishing Attacks'}
+                    ],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Impact'
+                        },
+                        min: 0,
+                        max: 5
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Likelihood'
+                        },
+                        min: 0,
+                        max: 5
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.raw.risk;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
